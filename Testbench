@@ -1,0 +1,23 @@
+module tb;
+  reg signed [3:0] QR,BR;
+  wire signed [7:0] product;
+  
+  booth uut(QR,BR,product);
+  
+  initial
+    begin
+      $dumpfile("dump.vcd");
+      $dumpvars(0,tb); 
+      $monitor ("BR = %b QR = %b || product = %b",BR,QR,product);
+      
+      BR = 4'b0111;QR=-4'b0011;
+      #10 BR = 4'b0011; QR = 4'b0010;
+      #10 BR = 4'b0101; QR = 4'b0011;
+      #10 BR = -4'b0011; QR = 4'b0010;
+      #10 BR = -4'b0011; QR = -4'b0010;
+      #10 BR = 4'b0111; QR = -4'b0010;
+      #10$finish;
+    end
+endmodule
+    
+  
