@@ -1,0 +1,30 @@
+module booth(
+    input signed [3:0] QR,BR,
+    output reg signed [7:0] Product
+);
+integer i;
+reg signed [3:0] AC,QR_temp;
+reg Qn1;
+reg signed [8:0] temp;
+always @(*) begin
+    AC = 4'b0000;
+    QR_temp = QR;
+    Qn1 = 1'b0;
+    for(i=0;i<4;i=i+1) begin
+        case({QR_temp[0],Qn1})
+            2'b01:
+                AC = AC + BR;
+            2'b10:
+                AC = AC - BR;
+            default:
+                AC = AC;
+        endcase
+        temp = {AC,QR_temp,Qn1};
+        temp = temp >>> 1;
+        AC      = temp[8:5];
+        QR_temp = temp[4:1];
+        Qn1     = temp[0];
+    end
+    Product = {AC,QR_temp};
+end
+endmodule
